@@ -1,67 +1,95 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Formatter;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class P02Exercicio04 {
 
 
 
-    public static void main(String[] args) {
-        int arr[] = {16223, 898, 13, 906, 235, 23, 9, 1532, 6388, 2511, 8};
-        radixSort(arr);
+    public static int countDigits (int number) {
+        return (number == 0)
+                ? 1
+                : (int)(Math.log10(number) + 1);
     }
 
+    public static List<String> setZerosAEsquerdaEConverteParaString(int digitoMaximo, int iArr[]){
+        List<String> listNumerosConvertidosParaString = new ArrayList<>();
+        for(int n: iArr){
+            String numeroComZerosAEsquerda = String.format("%0"+ digitoMaximo + "d", n);
+            listNumerosConvertidosParaString.add(numeroComZerosAEsquerda);
+        }
+        return listNumerosConvertidosParaString;
+    }
 
-    public static void radixSort(int arr[]) {
-        String arrString[] = new String[arr.length];
-        int maiorValor = 0;
-        int menorValor = 0;
+    public static List<String> ordenaLista(List<String> arr, int digitoMaximo, int n){
+        List<List<String>> listaDeListas = new ArrayList<>();
+        for(int i = 0; i<10;i++){
+            listaDeListas.add(new ArrayList<>());
+        }
 
-        for (int i = 0; i < arr.length; i++) {
-            if (i == 0) {
-                maiorValor = arr[i];
-                menorValor = arr[i];
+        List<String> newArray = new ArrayList<>();
+        for(String s: arr){
+            switch(s.charAt(s.length()-n)){
+                case '0': listaDeListas.get(0).add(s);
+                    break;
+                case '1': listaDeListas.get(1).add(s);
+                    break;
+                case '2': listaDeListas.get(2).add(s);
+                    break;
+                case '3': listaDeListas.get(3).add(s);
+                    break;
+                case '4': listaDeListas.get(4).add(s);
+                    break;
+                case '5': listaDeListas.get(5).add(s);
+                    break;
+                case '6': listaDeListas.get(6).add(s);
+                    break;
+                case '7': listaDeListas.get(7).add(s);
+                    break;
+                case '8': listaDeListas.get(8).add(s);
+                    break;
+                case '9': listaDeListas.get(9).add(s);
+                    break;
             }
-
-            if (arr[i] > maiorValor) {
-                maiorValor = arr[i];
-            }
-
-            if (arr[i] < menorValor) {
-                menorValor = arr[i];
+        }
+        for(List<String> list: listaDeListas){
+            for(String s: list){
+                newArray.add(s);
             }
         }
 
-
-        for (int i = 0; i < arr.length; i++) {
-            String numeroComZeros = String.format("%0" + String.valueOf(maiorValor).length() + "d", arr[i]);
-
-            arrString[i] = numeroComZeros;
+        listaDeListas = new ArrayList<>();
+        for(int i = 0; i<10;i++){
+            listaDeListas.add(new ArrayList<>());
         }
 
+        return (n<digitoMaximo)
+                ? ordenaLista(newArray, digitoMaximo, n+1)
+                : newArray;
+    }
+    public static void radixSort(int iArr[]){
 
-        int posVerificada = String.valueOf(maiorValor).length() - 1;
-        while (posVerificada >= 0) {
-            List<List<String>> listaDeListas = new ArrayList<>();
-
-            for (int k = 0; k < 10; k++) listaDeListas.add(new ArrayList<>());
-
-            for (String s : arrString) {
-                int ultimoDigito = Character.getNumericValue(s.charAt(posVerificada));
-
-                listaDeListas.get(ultimoDigito).add(s);
-            }
-
-            int cont = 0;
-            for (List<String> lista : listaDeListas) {
-                for (String s : lista) {
-                    arrString[cont] = s;
-
-                    cont++;
-                }
-            }
-            posVerificada--;
+        int maiorDigito = 0;
+        for (int num: iArr) {
+            if(countDigits(num) > maiorDigito)
+                maiorDigito = countDigits(num);
+            else
+                continue;
         }
-        Arrays.stream(arrString).forEach(s -> System.out.print(s + " "));
+        List<String> arrString = setZerosAEsquerdaEConverteParaString(maiorDigito, iArr);
+
+        System.out.println(ordenaLista(arrString, maiorDigito, 1));
+    }
+    public static void main(String[] args){
+        int iArr[] = {16223, 898, 13, 906, 235, 23, 9, 1532, 6388, 2511, 8};
+
+        radixSort(iArr);
+
+        for(int i : iArr){
+            System.out.println(i + " ");
+        }
     }
 }
