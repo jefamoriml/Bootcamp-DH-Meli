@@ -19,6 +19,6 @@ public class Gerente extends FuncionarioCLT{
             this.setValorDoUltimoSalarioPago(pisoSalarial + (pisoSalarial*bonificacao));
         else
             this.setValorDoUltimoSalarioPago(pisoSalarial);
-        System.out.println("Valor pago ao(à) Gerente " + this.getNome() + " " + this.getSobrenome() + " em " + this.getDataDoUltimoPagamento() + ": "+ this.getValorDoUltimoSalarioPago());
+        System.out.println("Valor pago Gerente " + this.getNome() + " " + this.getSobrenome() + " em " + this.getDataDoUltimoPagamento() + ": "+ this.getValorDoUltimoSalarioPago());
     }
 }
